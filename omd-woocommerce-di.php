@@ -276,7 +276,10 @@ if ( ! class_exists( 'OMDWoocommerceDI ') ) {
                 }
             }
 
-            if ( 5 == date('w', strtotime('now') ) ) {
+            $isThursdayPast15 = 4 == date('w', strtotime('now -15 hours'));
+            $isFriday = 5 == date('w', strtotime('now'));
+            
+            if ( $isThursdayPast15 || $isFriday ) {
                 $desiredDeliveryDate = date("Ymd", strtotime("next saturday + 1 week"));
             } else {
                 $desiredDeliveryDate = date("Ymd", strtotime("next saturday"));
