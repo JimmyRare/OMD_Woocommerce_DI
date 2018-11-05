@@ -276,9 +276,16 @@ if ( ! class_exists( 'OMDWoocommerceDI ') ) {
                 }
             }
 
+            if ( 5 == date('w', strtotime('now') ) ) {
+                $desiredDeliveryDate = date("Ymd", strtotime("next saturday + 1 week"));
+            } else {
+                $desiredDeliveryDate = date("Ymd", strtotime("next saturday"));
+            }
+
             $data = array(
                 'shopId' => $this->shop_id,
                 'transportSolutionId' => $this->transport_solution_id,
+                'desiredDeliveryDate' => $desiredDeliveryDate,
                 'parties' => array(
                         array(
                             'type'          => 'consignee',
