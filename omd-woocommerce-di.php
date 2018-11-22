@@ -108,6 +108,8 @@ if ( ! class_exists( 'OMDWoocommerceDI ') ) {
                     $order->update_meta_data( 'ah_floorNo',         WC()->session->get( 'ah_floorNo' ) );
                     $order->update_meta_data( 'ah_flatNo',          WC()->session->get( 'ah_flatNo' ) );
                     $order->save();
+
+                    $this->log_order( $response, $order_id );
                 }
 
                 curl_close( $curl );
@@ -361,6 +363,15 @@ if ( ! class_exists( 'OMDWoocommerceDI ') ) {
             echo $html . '<div class="error-message">Något gick fel, försök igen senare.</div>';
 
             echo $html;
+        }
+
+        function log_order( $response, $order_id ) {
+            $log = "IP: " . $_SERVER['REMOTE_ADDR'] . ' - ' . date('F j, Y, g:i a') . PHP_EOL .
+                    "Respone message: " . $response . PHP_EOL .
+                    "Order ID: " . $order_id . PHP_EOL .
+                    "Name sent to DI: " . $order->get_shipping_first_name() . ' ' . $order->get_shipping_last_name() . PHP_EOL;
+
+            file_put_contents('./di_order_response' . date('j.n.Y') . '.txt', $log, FILE_APPEND);
         }
 
         function setup_settings() {
